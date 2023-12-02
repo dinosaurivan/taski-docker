@@ -178,14 +178,14 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
+          username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd taski
             sudo docker compose -f docker-compose.production.yml pull
             sudo docker compose -f docker-compose.production.yml down
-            sudo docker compose -f docker-compose.production.yml up -d
+            sudo docker compose -f docker-compose.production.yml up --detach
             sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
             sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
             sudo docker compose -f docker-compose.production.yml exec backend cp -r /collected_static/. /backend_static/static/ 
@@ -199,4 +199,4 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_RECIPIENT }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: Проект taski задеплоился!
+        message: "Проект taski задеплоился!"

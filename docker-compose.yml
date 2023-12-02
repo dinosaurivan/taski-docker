@@ -2,7 +2,7 @@ version: '3'
 
 volumes:
   pg_data:
-  static:
+  static_volume:
 
 services:
 
@@ -16,7 +16,7 @@ services:
     build: ./backend/
     env_file: .env
     volumes:
-      - static:/backend_static
+      - static_volume:/backend_static
     depends_on:
       - db
 
@@ -24,13 +24,13 @@ services:
     build: ./frontend/
     env_file: .env
     volumes:
-      - static:/frontend_static
+      - static_volume:/frontend_static
 
   gateway:
     build: ./gateway/
     depends_on:
       - backend
     volumes:
-      - static:/staticfiles/
+      - static_volume:/staticfiles/
     ports:
       - 8000:80
